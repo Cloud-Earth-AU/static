@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@48,400,1,0" />
+  </head>
+
+  <body>
+
+    <style>
+      body {
+        background-image: url('https://images.unsplash.com/photo-1549740425-5e9ed4d8cd34?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxjb2xsZWN0aW9uLXBhZ2V8MXwzOTU0NTB8fGVufDB8fHx8&w=1000&q=80');
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-position: center;
+        background-size: contain;
+      }
+
+    </style>
+    <div class="fixed-action-btn">
+      <a class="btn-floating btn-large" style="background-color:#2DD881">
+        <i class="large material-symbols-rounded">more_vert</i>
+      </a>
+      <ul>
+        <li><a style="background-color:#2DD881" class="btn-floating" href="javascript:shopSearch()"><i class="material-symbols-rounded">shopping_bag</i></a></li>
+        <li><a style="background-color:#2DD881" class="btn-floating" href="javascript:imgSearch()"><i class="material-symbols-rounded">image_search</i></a></li>
+        <li><a style="background-color:#2DD881" class="btn-floating" href="javascript:datasheetSearch()"><i class="material-symbols-rounded">manage_search</i></a></li>
+        <li><a style="background-color:#2DD881" class="btn-floating" href="javascript:openImg()"><i class="material-symbols-rounded">zoom_in</i></a></li>
+      </ul>
+    </div>
+
+    <a id="producttitle" href="javascript:navigator.clipboard.writeText(params.get('vendor')+' '+params.get('stockcode'));M.toast({html:'Copied'})" style="position:fixed;top:10px;left:10px;background-color:white;border-radius:10000px;padding:10px;background-color:#2DD881;color:white;-webkit-box-shadow: 0 2px 2px 0 rgb(0 0 0 / 14%), 0 3px 1px -2px rgb(0 0 0 / 12%), 0 1px 5px 0 rgb(0 0 0 / 20%);box-shadow: 0 2px 2px 0 rgb(0 0 0 / 14%), 0 3px 1px -2px rgb(0 0 0 / 12%), 0 1px 5px 0 rgb(0 0 0 / 20%);">
+      Loading
+    </a>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script>
+      const params = new URLSearchParams(window.location.search);
+      document.body.style.backgroundImage = `url('${params.get('imgurl')}')`;
+
+    </script>
+    <script>
+      function createPopupWin(pageURL, pageTitle,
+        popupWinWidth, popupWinHeight) {
+        var left = (screen.width - popupWinWidth) / 2;
+        var top = (screen.height - popupWinHeight) / 4;
+
+        window.open(pageURL, pageTitle,
+          'resizable=yes, width=' + popupWinWidth +
+          ', height=' + popupWinHeight + ', top=' +
+          top + ', left=' + left);
+      }
+
+      function openImg() {
+        const img = new Image();
+        var imgurl = params.get('imgurl');
+        img.addEventListener("load", () => {
+          createPopupWin(params.get('imgurl'),
+            '', img.naturalWidth * 1.5, img.naturalHeight * 1.5);
+        });
+        img.src = imgurl;
+      }
+
+      function imgSearch() {
+        createPopupWin(`https://www.google.com.au/search?q=${params.get('vendor')}%20${params.get('stockcode')}&tbm=isch`,
+          '', screen.width * 0.75, screen.height * 0.75);
+      }
+
+      function datasheetSearch() {
+        createPopupWin(`https://www.google.com.au/search?q=${params.get('vendor')}%20${params.get('stockcode')}%20datasheet`,
+          '', screen.width * 0.75, screen.height * 0.75);
+      }
+
+      function shopSearch() {
+        createPopupWin(`https://www.google.com.au/search?q=${params.get('vendor')}%20${params.get('stockcode')}&tbm=shop`,
+          '', screen.width * 0.75, screen.height * 0.75);
+      }
+
+    </script>
+    <script>
+      document.querySelector("#producttitle").innerHTML = params.get('vendor') + " " + params.get('stockcode')
+
+    </script>
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        var elems = document.querySelectorAll('.fixed-action-btn');
+        var instances = M.FloatingActionButton.init(elems, {
+          hoverEnabled: false
+        });
+      });
+
+    </script>
+  </body>
+
+</html>
